@@ -109,8 +109,7 @@ function App() {
           {/* Link Cards */}
           <div className="space-y-4">
             <LinkCard
-              title="PROTOCOLO DARK"
-              subtitle="O sistema de 5 dígitos mensais."
+              title="PROTOCOLO DARK ⚠️"
               url="https://protocolodark.vercel.app/"
               image={protocoloImage}
               borderColor="#FFD700"
@@ -119,20 +118,18 @@ function App() {
             />
 
             <LinkCard
-              title="INSTAGRAM"
-              subtitle="Bastidores da Operação."
+              title="INSTAGRAM // BASTIDORES"
               url="https://www.instagram.com/lincojoffre/"
               image={instagramImage}
-              borderColor="#00AEEF"
+              borderColor="#E1306C"
               delay={1.1}
             />
 
             <LinkCard
-              title="TIKTOK"
-              subtitle="Análises e Cortes Virais."
+              title="TIKTOK // CORTES"
               url="https://www.tiktok.com/@.omeentor"
               image={tiktokImage}
-              borderColor="#333"
+              borderColor="#00F2EA"
               delay={1.3}
             />
           </div>
