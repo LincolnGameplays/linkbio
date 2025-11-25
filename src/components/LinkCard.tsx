@@ -36,10 +36,10 @@ const LinkCard: React.FC<LinkCardProps> = ({
 
         // Layer 1: Vanilla Tilt (Physical Card Tilt)
         VanillaTilt.init(cardRef.current, {
-            max: 5,
+            max: 15, // Increased tilt
             speed: 400,
             glare: true,
-            'max-glare': 0.2,
+            'max-glare': 0.4, // Stronger glare
             scale: 1.02,
             gyroscope: true,
         });
@@ -79,7 +79,7 @@ const LinkCard: React.FC<LinkCardProps> = ({
             rel="noopener noreferrer"
             className="
                 relative block w-full h-32 overflow-hidden rounded-xl
-                border-2 bg-black
+                border-2 bg-black/50 backdrop-blur-sm
                 transition-all duration-500 group
                 animate-pulse hover:animate-none
             "
@@ -102,14 +102,14 @@ const LinkCard: React.FC<LinkCardProps> = ({
                 className="absolute inset-0 w-full h-full bg-cover bg-center"
                 style={{
                     backgroundImage: `url(${image})`,
-                    scale: 1.2, // Scale up to allow movement
+                    backgroundSize: '110%', // Zoomed in for parallax
                     x: bgX,
                     y: bgY,
                 }}
             />
 
             {/* Glass Reflection Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
             {/* Inner Border Glow */}
             <div

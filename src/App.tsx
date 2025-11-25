@@ -47,7 +47,7 @@ function App() {
         <div className="w-full max-w-[480px]">
           {/* Header Section */}
           <motion.div
-            className="text-center mb-8"
+            className="text-center mb-12"
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -74,7 +74,7 @@ function App() {
 
             {/* Name */}
             <motion.h1
-              className="text-3xl font-impact tracking-widest text-white mb-2"
+              className="text-3xl font-impact tracking-widest text-white mb-2 text-glow"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
@@ -107,7 +107,7 @@ function App() {
           </motion.div>
 
           {/* Visual Portals Stack */}
-          <div className="space-y-6 w-full max-w-sm mx-auto">
+          <div className="space-y-6 w-full max-w-sm mx-auto px-6">
             {/* Protocolo Dark - Gold Portal */}
             <LinkCard
               url="https://protocolodark.vercel.app/"
