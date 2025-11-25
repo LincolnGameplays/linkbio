@@ -14,7 +14,7 @@ export default {
                 alert: '#EF4444',
             },
             fontFamily: {
-                impact: ['Impact', 'Arial Black', 'sans-serif'],
+                sans: ['Inter', 'sans-serif'],
             },
             letterSpacing: {
                 widest: '0.2em',
