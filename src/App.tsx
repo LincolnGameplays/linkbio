@@ -106,39 +106,29 @@ function App() {
             </motion.div>
           </motion.div>
 
-          {/* Link Cards - Bento Grid */}
-          <div className="grid grid-cols-2 gap-4 w-full">
-            {/* Hero Card (Full Width) */}
-            <div className="col-span-2">
-              <LinkCard
-                title="PROTOCOLO DARK"
-                subtitle="O sistema de 5 dígitos mensais."
-                url="https://protocolodark.vercel.app/"
-                image={protocoloImage}
-                borderColor="#FFD700"
-                variant="hero"
-                delay={0.9}
-              />
-            </div>
-
-            {/* Social Cards (2 Columns) */}
+          {/* Visual Portals Stack */}
+          <div className="space-y-6 w-full max-w-sm mx-auto">
+            {/* Protocolo Dark - Gold Portal */}
             <LinkCard
-              title="INSTAGRAM"
-              subtitle="Bastidores"
+              url="https://protocolodark.vercel.app/"
+              image={protocoloImage}
+              borderColor="#FFD700"
+              delay={0.9}
+            />
+
+            {/* Instagram - Pink Portal */}
+            <LinkCard
               url="https://www.instagram.com/lincojoffre/"
               image={instagramImage}
               borderColor="#E1306C"
-              variant="grid"
               delay={1.1}
             />
 
+            {/* TikTok - Cyan Portal */}
             <LinkCard
-              title="TIKTOK"
-              subtitle="Cortes Virais"
               url="https://www.tiktok.com/@.omeentor"
               image={tiktokImage}
               borderColor="#00F2EA"
-              variant="grid"
               delay={1.3}
             />
           </div>
