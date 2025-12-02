@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -36,47 +38,16 @@ body::before {
 }
 
 @keyframes grain {
-
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-
-  10% {
-    transform: translate(-5%, -10%);
-  }
-
-  20% {
-    transform: translate(-15%, 5%);
-  }
-
-  30% {
-    transform: translate(7%, -25%);
-  }
-
-  40% {
-    transform: translate(-5%, 25%);
-  }
-
-  50% {
-    transform: translate(-15%, 10%);
-  }
-
-  60% {
-    transform: translate(15%, 0%);
-  }
-
-  70% {
-    transform: translate(0%, 15%);
-  }
-
-  80% {
-    transform: translate(3%, 35%);
-  }
-
-  90% {
-    transform: translate(-10%, 10%);
-  }
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -10%); }
+  20% { transform: translate(-15%, 5%); }
+  30% { transform: translate(7%, -25%); }
+  40% { transform: translate(-5%, 25%); }
+  50% { transform: translate(-15%, 10%); }
+  60% { transform: translate(15%, 0%); }
+  70% { transform: translate(0%, 15%); }
+  80% { transform: translate(3%, 35%); }
+  90% { transform: translate(-10%, 10%); }
 }
 
 /* Spotlight Effect */
@@ -92,83 +63,12 @@ body::before {
   z-index: 1;
 }
 
-/* Glitch Text Effect */
-@keyframes glitch {
-  0% {
-    text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
-      -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
-      -0.05em 0.025em 0 rgba(0, 0, 255, 0.75);
-  }
-
-  14% {
-    text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
-      -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
-      -0.05em 0.025em 0 rgba(0, 0, 255, 0.75);
-  }
-
-  15% {
-    text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
-      0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
-      -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-
-  49% {
-    text-shadow: -0.05em -0.025em 0 rgba(255, 0, 0, 0.75),
-      0.025em 0.025em 0 rgba(0, 255, 0, 0.75),
-      -0.05em -0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-
-  50% {
-    text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
-      0.05em 0 0 rgba(0, 255, 0, 0.75),
-      0 -0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-
-  99% {
-    text-shadow: 0.025em 0.05em 0 rgba(255, 0, 0, 0.75),
-      0.05em 0 0 rgba(0, 255, 0, 0.75),
-      0 -0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-
-  100% {
-    text-shadow: -0.025em 0 0 rgba(255, 0, 0, 0.75),
-      -0.025em -0.025em 0 rgba(0, 255, 0, 0.75),
-      -0.025em -0.05em 0 rgba(0, 0, 255, 0.75);
-  }
-}
-
-.glitch:hover {
-  animation: glitch 0.5s cubic-bezier(.25, .46, .45, .94) both infinite;
-}
-
-/* Heartbeat Pulse */
-@keyframes heartbeat {
-
-  0%,
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
-  }
-
-  50% {
-    transform: scale(1.02);
-    box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0);
-  }
-}
-
-.heartbeat {
-  animation: heartbeat 2s ease-in-out infinite;
-}
-
 /* Pulsing Dot */
 @keyframes pulse-dot {
-
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
     transform: scale(1);
   }
-
   50% {
     opacity: 0.5;
     transform: scale(1.2);
@@ -197,6 +97,64 @@ body::before {
   background: #00AEEF;
 }
 
-.text-glow {
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+/* Instagram Liquid Gradient */
+.instagram-gradient {
+  background: linear-gradient(
+    45deg,
+    #833AB4,
+    #FD1D1D,
+    #FCB045,
+    #833AB4
+  );
+  background-size: 200% 200%;
+  animation: instagram-flow 3s ease infinite;
+}
+
+@keyframes instagram-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* TikTok RGB Glitch Effect */
+.tiktok-glitch {
+  position: relative;
+  text-shadow: 
+    2px 2px 0 rgba(0, 242, 234, 0.7),
+    -2px -2px 0 rgba(255, 0, 80, 0.7);
+  animation: tiktok-glitch 0.3s infinite;
+}
+
+@keyframes tiktok-glitch {
+  0% {
+    text-shadow: 
+      2px 2px 0 rgba(0, 242, 234, 0.7),
+      -2px -2px 0 rgba(255, 0, 80, 0.7);
+  }
+  25% {
+    text-shadow: 
+      -2px -2px 0 rgba(0, 242, 234, 0.7),
+      2px 2px 0 rgba(255, 0, 80, 0.7);
+  }
+  50% {
+    text-shadow: 
+      2px -2px 0 rgba(0, 242, 234, 0.7),
+      -2px 2px 0 rgba(255, 0, 80, 0.7);
+  }
+  75% {
+    text-shadow: 
+      -2px 2px 0 rgba(0, 242, 234, 0.7),
+      2px -2px 0 rgba(255, 0, 80, 0.7);
+  }
+  100% {
+    text-shadow: 
+      2px 2px 0 rgba(0, 242, 234, 0.7),
+      -2px -2px 0 rgba(255, 0, 80, 0.7);
+  }
 }

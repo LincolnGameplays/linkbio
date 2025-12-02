@@ -1,123 +1,186 @@
-import { useRef, useEffect } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import VanillaTilt from 'vanilla-tilt';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import MatrixRain from './MatrixRain';
 
 interface LinkCardProps {
-    url: string;
-    image: string;
-    borderColor?: string;
-    delay?: number;
+  url: string;
+  variant: 'matrix' | 'instagram' | 'tiktok';
+  delay?: number;
 }
 
-const LinkCard: React.FC<LinkCardProps> = ({
-    url,
-    image,
-    borderColor = '#333',
-    delay = 0,
-}) => {
-    const cardRef = useRef<HTMLAnchorElement>(null);
+const LinkCard: React.FC<LinkCardProps> = ({ url, variant, delay = 0 }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [scrambledText, setScrambledText] = useState('');
 
-    // Motion Values for Parallax
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
+  const config = {
+    matrix: {
+      title: 'PROTOCOLO DARK',
+      className: 'h-40 col-span-2',
+    },
+    instagram: {
+      title: 'INSTAGRAM',
+      className: 'h-32 col-span-1',
+    },
+    tiktok: {
+      title: 'TIKTOK',
+      className: 'h-32 col-span-1',
+    },
+  };
 
-    // Smooth Spring Physics
-    const springConfig = { damping: 20, stiffness: 200 };
-    const springX = useSpring(mouseX, springConfig);
-    const springY = useSpring(mouseY, springConfig);
+  const { title, className } = config[variant];
 
-    // Inverse Parallax Transform (Mouse Left -> Image Right)
-    // Mapping +/- 150px mouse movement to +/- 15px image movement (inverted)
-    const bgX = useTransform(springX, [-150, 150], [15, -15]);
-    const bgY = useTransform(springY, [-150, 150], [15, -15]);
+  // Decode/Scramble animation for Matrix variant
+  useEffect(() => {
+    if (variant !== 'matrix' || !isHovered) {
+      setScrambledText(title);
+      return;
+    }
 
-    useEffect(() => {
-        if (!cardRef.current) return;
-
-        // Layer 1: Vanilla Tilt (Physical Card Tilt)
-        VanillaTilt.init(cardRef.current, {
-            max: 15, // Increased tilt
-            speed: 400,
-            glare: true,
-            'max-glare': 0.4, // Stronger glare
-            scale: 1.02,
-            gyroscope: true,
-        });
-
-        return () => {
-            if (cardRef.current) {
-                const instance = (cardRef.current as any).vanillaTilt;
-                if (instance) instance.destroy();
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+    let iteration = 0;
+    const interval = setInterval(() => {
+      setScrambledText(
+        title
+          .split('')
+          .map((char, index) => {
+            if (index < iteration) {
+              return title[index];
             }
-        };
-    }, []);
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join('')
+      );
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        if (!cardRef.current) return;
-        const rect = cardRef.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
+      if (iteration >= title.length) {
+        clearInterval(interval);
+      }
 
-        // Calculate distance from center
-        const distanceX = e.clientX - centerX;
-        const distanceY = e.clientY - centerY;
+      iteration += 1 / 3;
+    }, 30);
 
-        mouseX.set(distanceX);
-        mouseY.set(distanceY);
-    };
+    return () => clearInterval(interval);
+  }, [isHovered, title, variant]);
 
-    const handleMouseLeave = () => {
-        mouseX.set(0);
-        mouseY.set(0);
-    };
+  return (
+    <motion.a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${className} relative block overflow-hidden rounded-xl group cursor-pointer`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.6,
+        delay: delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+    >
+      {/* MATRIX VARIANT */}
+      {variant === 'matrix' && (
+        <>
+          {/* Canvas Background */}
+          <div className="absolute inset-0 bg-black">
+            <MatrixRain color="#00FF41" fontSize={12} speed={40} />
+          </div>
 
-    return (
-        <motion.a
-            ref={cardRef}
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="
-                relative block w-full h-32 overflow-hidden rounded-xl
-                border-2 bg-black/50 backdrop-blur-sm
-                transition-all duration-500 group
-                animate-pulse hover:animate-none
-            "
+          {/* Content */}
+          <div className="relative z-10 h-full flex items-center justify-center">
+            <h2 className="text-3xl md:text-4xl font-mono font-bold text-green-400 tracking-wider">
+              {scrambledText}
+            </h2>
+          </div>
+
+          {/* Glowing Border */}
+          <div
+            className="absolute inset-0 rounded-xl pointer-events-none"
             style={{
-                borderColor: borderColor,
-                boxShadow: `0 0 15px ${borderColor}40`,
+              boxShadow: isHovered
+                ? '0 0 30px rgba(0, 255, 65, 0.6), inset 0 0 30px rgba(0, 255, 65, 0.2)'
+                : '0 0 20px rgba(0, 255, 65, 0.4)',
+              border: '2px solid rgba(0, 255, 65, 0.5)',
+              transition: 'all 0.3s ease',
             }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-                duration: 0.8,
-                delay: delay,
-                ease: [0.22, 1, 0.36, 1],
+          />
+        </>
+      )}
+
+      {/* INSTAGRAM VARIANT */}
+      {variant === 'instagram' && (
+        <>
+          {/* Animated Gradient Background */}
+          <div
+            className="absolute inset-0 instagram-gradient"
+            style={{
+              backgroundSize: isHovered ? '400% 400%' : '200% 200%',
+              transition: 'background-size 0.5s ease',
             }}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-        >
-            {/* Layer 2: Parallax Image Background */}
-            <motion.div
-                className="absolute inset-0 w-full h-full bg-cover bg-center"
-                style={{
-                    backgroundImage: `url(${image})`,
-                    backgroundSize: '110%', // Zoomed in for parallax
-                    x: bgX,
-                    y: bgY,
-                }}
-            />
+          />
 
-            {/* Glass Reflection Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+          {/* Content */}
+          <div className="relative z-10 h-full flex items-center justify-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white tracking-wide">
+              INSTAGRAM
+            </h2>
+          </div>
 
-            {/* Inner Border Glow */}
+          {/* Border */}
+          <div
+            className="absolute inset-0 rounded-xl pointer-events-none border-2 border-white/20"
+            style={{
+              boxShadow: isHovered ? '0 0 20px rgba(253, 29, 29, 0.4)' : 'none',
+              transition: 'box-shadow 0.3s ease',
+            }}
+          />
+        </>
+      )}
+
+      {/* TIKTOK VARIANT */}
+      {variant === 'tiktok' && (
+        <>
+          {/* Background */}
+          <div className="absolute inset-0 bg-black" />
+
+          {/* Content */}
+          <div className="relative z-10 h-full flex items-center justify-center">
+            <h2
+              className={`text-2xl md:text-3xl font-bold text-white tracking-wide transition-all duration-200 ${
+                isHovered ? 'tiktok-glitch' : ''
+              }`}
+            >
+              TIKTOK
+            </h2>
+          </div>
+
+          {/* RGB Split Border */}
+          <div className="absolute inset-0 rounded-xl pointer-events-none">
+            {/* Cyan Left Border */}
             <div
-                className="absolute inset-0 border border-white/20 rounded-xl opacity-50 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                style={{ boxShadow: `inset 0 0 20px ${borderColor}20` }}
+              className="absolute left-0 top-0 bottom-0 w-0.5 bg-cyan"
+              style={{
+                boxShadow: isHovered ? '0 0 10px #00F2EA' : 'none',
+                transition: 'box-shadow 0.3s ease',
+              }}
             />
-        </motion.a>
-    );
+            {/* Red Right Border */}
+            <div
+              className="absolute right-0 top-0 bottom-0 w-0.5 bg-[#FF0050]"
+              style={{
+                boxShadow: isHovered ? '0 0 10px #FF0050' : 'none',
+                transition: 'box-shadow 0.3s ease',
+              }}
+            />
+            {/* Top/Bottom Borders */}
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan via-white to-[#FF0050]" />
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-cyan via-white to-[#FF0050]" />
+          </div>
+        </>
+      )}
+    </motion.a>
+  );
 };
 
 export default LinkCard;
